@@ -1,6 +1,7 @@
 import { createClient } from '@/app/utils/supabase/server';
+import { Article } from '@/types';
 
-export async function fetchRecentArticles(maxResults: number) {
+export async function fetchRecentArticles(maxResults: number): Promise<Article[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from('articles')
@@ -13,7 +14,8 @@ export async function fetchRecentArticles(maxResults: number) {
         image,
         scraped (
           date,
-          publisher
+          publisher,
+          url
         )
       )
     `)
@@ -22,27 +24,13 @@ export async function fetchRecentArticles(maxResults: number) {
 
   if (error) {
     console.error('Error fetching articles:', error);
-    return;
+    return [];
   }
-  return data;
+
+  return data as Article[];
 }
 
-type ArticleById = {
-  id: string;
-  rating: number | null;
-  generated: {
-    title: string;
-    text: string;
-    image: string;
-    scraped: {
-      date: string;
-      publisher: string;
-      url: string;
-    };
-  };
-};
-
-export async function fetchArticleById(id: string): Promise<ArticleById | undefined>{
+export async function fetchArticleById(id: string): Promise<Article | undefined>{
   const supabase = await createClient();
   const { data, error } = await supabase
     .from('articles')

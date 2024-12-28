@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button"
-import { ThumbsUp, ThumbsDown, AlertCircle } from 'lucide-react'
+import { ThumbsUp, ThumbsDown } from 'lucide-react'
 import { createClient } from '@/app/utils/supabase/server'
 import { revalidatePath } from "next/cache"
-import { Alert, AlertDescription } from "@/components/ui/alert"
 import Link from 'next/link'
 
 
@@ -50,7 +49,7 @@ async function rate(articleId: string, rating: string){
   }
 
   if (rating === 'none') {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('ratings')
       .delete()
       .match({ article_id: articleId, user_id: userId });
@@ -64,7 +63,7 @@ async function rate(articleId: string, rating: string){
   }
 
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('ratings')
     .upsert(
       { article_id: articleId, user_id: userId, rating: rating },
@@ -84,7 +83,6 @@ export async function ArticleRating({ articleId }: ArticleRatingProps) {
   const user = data?.user
 
   let currentRating = 'none'
-  let showLoginMessage = true
 
   if (user){
     const userId = user.id
