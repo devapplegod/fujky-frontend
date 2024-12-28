@@ -44,12 +44,16 @@ export default async function AccountPage() {
             </div>
             <div>
               <h3 className="text-lg font-semibold">Poslední přihlášení</h3>
-              <p className="text-gray-400">{new Date(user.last_sign_in_at).toLocaleString()}</p>
+              <p className="text-gray-400">
+                {user.last_sign_in_at
+                  ? new Date(user.last_sign_in_at).toLocaleString()
+                  : 'N/A'}
+              </p>
             </div>
           </CardContent>
           <CardFooter>
             <form action={signOut}>
-              <Button type="submit" variant="destructive">Sign Out</Button>
+              <Button type="submit" variant="destructive">Odhlásit se</Button>
             </form>
           </CardFooter>
         </Card>
