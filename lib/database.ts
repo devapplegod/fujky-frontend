@@ -1,5 +1,5 @@
 import { createClient } from '@/app/utils/supabase/server';
-import { Article } from '@/types';
+import { Article, ArticleRow } from '@/types';
 import { GeneratedData } from '@/types';
 
 export async function fetchRecentArticles(maxResults: number): Promise<Article[]> {
@@ -32,17 +32,13 @@ export async function fetchRecentArticles(maxResults: number): Promise<Article[]
     return [];
   }
 
-  // Map data to match Article[] type
-  const articles: Article[] = data.map((item: any) => {
-    // Extract the first element of the 'generated' array
+  const articles: Article[] = data.map((item: ArticleRow) => {
     const generatedDataArray = item.generated;
     const generatedData = Array.isArray(generatedDataArray) ? generatedDataArray[0] : generatedDataArray;
 
-    // Extract the first element of the 'scraped' array inside 'generated'
     const scrapedDataArray = generatedData?.scraped;
     const scrapedData = Array.isArray(scrapedDataArray) ? scrapedDataArray[0] : scrapedDataArray;
 
-    // Build the 'GeneratedData' object
     const generated: GeneratedData = {
       title: generatedData?.title || '',
       text: generatedData?.text || '',
@@ -54,7 +50,6 @@ export async function fetchRecentArticles(maxResults: number): Promise<Article[]
       },
     };
 
-    // Build the 'Article' object
     return {
       id: item.id,
       rating: item.rating,
@@ -84,7 +79,7 @@ export async function fetchArticleById(id: string): Promise<Article | undefined>
       )
     `)
     .eq('id', id)
-    .limit(1); // Ensure only one record is fetched
+    .limit(1);
 
   if (error) {
     console.error('Error fetching article by id:', error);
@@ -98,7 +93,6 @@ export async function fetchArticleById(id: string): Promise<Article | undefined>
 
   const item = data[0];
 
-  // Extract and map the data as before
   const generatedDataArray = item.generated;
   const generatedData = Array.isArray(generatedDataArray) ? generatedDataArray[0] : generatedDataArray;
 

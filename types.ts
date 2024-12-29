@@ -16,3 +16,23 @@ export interface Article {
     rating: number;
     generated: GeneratedData;
 }
+
+export interface ScrapedRow {
+    date: string;
+    publisher: string;
+    url: string;
+  }
+  
+  export interface GeneratedRow {
+    title: string;
+    text: string;
+    image: string;
+    scraped: ScrapedRow[];
+  }
+  
+  export interface ArticleRow {
+    id: string;
+    rating: number;
+    generated: GeneratedRow[];
+  }
+  
