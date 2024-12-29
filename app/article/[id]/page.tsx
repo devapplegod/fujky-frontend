@@ -29,7 +29,7 @@ export default async function ArticlePage({ params }: { params: { id: string } }
             size="lg" 
             className="fixed bottom-4 right-4 z-50 md:top-4 md:left-4 md:right-auto"
           >
-            <ChevronLeft className="mr-2 h-5 w-5" /> Back
+            <ChevronLeft className="mr-2 h-5 w-5" /> Zpět
           </Button>
         </Link>
         <article className="max-w-3xl mx-auto">
